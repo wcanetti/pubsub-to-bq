@@ -180,7 +180,7 @@ https://debezium.io/documentation/reference/1.6/operations/debezium-server.html
 
 Note that there are two main structures in the json file which are "before" and "after", reflecting the update performed in Postgres database. Also additional metadata information is included in the "source" structure and on the root of the json file, which is valuable information that we will later use in BigQuery to get the most recent version of each record in the table.
 
-### Streaming Inserts to BigQuery with Cloud Dataflow
+### Streaming Inserts to BigQuery with Cloud Dataflow Template Job
 
 Prerequisite: Create a BigQuery table in the project and dataset of your preference named "customers_delta". Use the *customers_delta_schema.json* file attached to this project to set the schema to the created table using the option "edit as text".
 
