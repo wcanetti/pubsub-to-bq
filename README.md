@@ -184,6 +184,12 @@ Note that there are two main structures in the json file which are "before" and 
 
 Prerequisite: Create a BigQuery table in the project and dataset of your preference named "customers_delta". Use the *customers_delta_schema.json* file attached to this project to set the schema to the created table using the option "edit as text".
 
+Note 1: This solution is limited to deploying one Dataflow Job per source DB table, as the Debezium connector (as of this writing) supports a 1:1 relationship between the table the changes are being captured for and the Pub/Sub topic deployed to buffer the captured changes. The Dataflow Template Job allows to only specify one topic, so there's a 1:1 relationship also established at this point, which doesn't help to workaround the current Debezium limitation. Consider also that there's a quota limit of 25 concurrent streaming Dataflow jobs, so just employ / propose this solution in case the scope of the project is limited to a few tables / specific need.
+
+Note 2: For a 1:N relationship between a Dataflow Job and multiple tables on the source DB, please consider this solution which consists of a custom Dataflow Job and lets you group a number of tables and get them processed by a single Dataflow Job by listening to multiple Pub/Sub topics in parallel at a time.
+
+Steps for the Cloud Dataflow Template Job:
+
 1) Go to Cloud Dataflow and select option "Create Job from Template".
 
 2) Fill in a Job Name of your preference, e.g: *cdc-pubsub-bigquery*.
