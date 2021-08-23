@@ -182,7 +182,7 @@ Note that there are two main structures in the json file which are "before" and 
 
 ### Streaming Inserts to BigQuery with Cloud Dataflow TEMPLATE Job
 
-Prerequisite: Create a BigQuery table in the project and dataset of your preference named "customers_delta". Use the *customers_delta_schema.json* file attached to this project to set the schema to the created table using the option "edit as text".
+Prerequisite: Create a BigQuery table in the project and dataset of your preference named "customers_delta". Use the *schema_customers_delta.json* file attached to this project to set the schema to the created table using the option "edit as text".
 
 Note 1: This solution is limited to deploying one Dataflow Job per source DB table, as the Debezium connector (as of this writing) supports a 1:1 relationship between the table the changes are being captured for and the Pub/Sub topic deployed to buffer the captured changes. The Dataflow Template Job allows to only specify one topic, so there's a 1:1 relationship also established at this point, which doesn't help to workaround the current Debezium limitation. Consider also that there's a quota limit of 25 concurrent streaming Dataflow jobs per project, so just employ / propose this solution in case the scope of the project is limited to a few tables / specific need.
 
@@ -206,7 +206,13 @@ Steps for the Cloud Dataflow Template Job:
 
 ### Streaming Inserts to BigQuery with Cloud Dataflow CUSTOM Job
 
-The JAVA code in this repository, resolves the constraints mentioned on the previous section. It allows to specify in the *configuration.properties file* in the resources subfolder of this project, the different tables (mapped 1:1 with topics in Cloud Pub/Sub), that we want to group and get changes for, in a single Dataflow job.
+Prerequisite 1: Create a BigQuery table in the project and dataset of your preference named "customers_delta". Use the *schema_customers_delta.json* file attached to this project to set the schema to the created table using the option "edit as text".
+
+Prerequisite 2: Create a BigQuery table in the project and dataset of your preference named "products_delta". Use the *schema_products_delta.json* file attached to this project to set the schema to the created table using the option "edit as text".
+
+The JAVA code in this repository, resolves the constraints mentioned on the previous section. It allows to specify in the *configuration.properties file* in the resources subfolder of this project, the different tables (mapped 1:1 with topics in Cloud Pub/Sub), that we want to group and get changes for, in a single Dataflow job. You can list the desired number of tables, but please consider setting up the correct number of maximum dataflow workers and machine type, by taking in consideration the volume of data and the frequency of the changes.
+
+Below are the configuration file properties to be specified:
 
     project=<your GCP project>
     database_instance=<your database instance>
@@ -217,16 +223,16 @@ The JAVA code in this repository, resolves the constraints mentioned on the prev
     bucket_url=<a GCP bucket> # to store temporary / staging data
     bucket_schema_root_path=<the folder within the GCP bucket where the BigQuery tables schema are stored> e.g.: bq_schemas/
 
-Execution command
+Command to execute the program from the Cloud Shell:
 
     mvn compile exec:java \
     -Dexec.mainClass=org.apache.beam.cdc \
     -Dexec.cleanupDaemonThreads=false \
     -Dexec.args=" \
-        --project=wcanetti-project-321017 \
+        --project=<your GCP project> \
         --region=us-central1 \
-        --tempGCSBQBucket=gs://cdc-pubsub-bigquery \
-        --tempGCSDataflowBucket=gs://cdc-pubsub-bigquery/temp \
+        --tempGCSBQBucket=<a GCP bucket> \
+        --tempGCSDataflowBucket=<a GCP bucket>/temp \
         --runner=DataflowRunner"
 
 ### Immediate Consistency approach
@@ -235,7 +241,7 @@ With this approach, queries reflect the current state of the replicated data. Im
 
 Getting back to our example, we have to first perform an initial load in a table in a BigQuery dataset, that we will call *customers_main*. This table will contain an snapshot of the current state of our table in the Postgres DB instance.
 
-Let's first create the table. Use the *customers_main_schema.json* file attached to this project to set the schema using the option "edit as text".
+Let's first create the table. Use the *schema_customers_main.json* file attached to this project to set the schema using the option "edit as text".
 
 After having created the table, you can use the script below to perform the initial load to the BigQuery *customers_main* table.
 

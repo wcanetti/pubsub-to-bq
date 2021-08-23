@@ -1,0 +1,22 @@
+[
+    {
+      "mode": "NULLABLE",
+      "name": "id",
+      "type": "INTEGER"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "first_name",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "description",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "weight",
+      "type": "FLOAT"
+    }
+  ]
