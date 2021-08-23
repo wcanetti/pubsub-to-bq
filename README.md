@@ -208,14 +208,14 @@ Steps for the Cloud Dataflow Template Job:
 
 The JAVA code in this repository, resolves the constraints mentioned on the previous section. It allows to specify in the *configuration.properties file* in the resources subfolder of this project, the different tables (mapped 1:1 with topics in Cloud Pub/Sub), that we want to group and get changes for, in a single Dataflow job.
 
-        project=\<your GCP project\>
-        database_instance=\<your database instance\>
-        source_db_schema=\<your database schema\>
-        tables=customers,products # the tables we want to capture, specify them delimited with comma
-        bq_dataset=\<your BigQuery dataset\>
-        topics_prefix=projects/\<your GCP project\>/topics/
-        bucket_url=\<a GCP bucket\> # to store temporary / staging data
-        bucket_schema_root_path=\<the folder within the GCP bucket where the BigQuery tables schema are stored\> e.g.: bq_schemas/
+    project=\<your GCP project\>
+    database_instance=\<your database instance\>
+    source_db_schema=\<your database schema\>
+    tables=customers,products # the tables we want to capture, specify them delimited with comma
+    bq_dataset=\<your BigQuery dataset\>
+    topics_prefix=projects/\<your GCP project\>/topics/
+    bucket_url=\<a GCP bucket\> # to store temporary / staging data
+    bucket_schema_root_path=\<the folder within the GCP bucket where the BigQuery tables schema are stored\> e.g.: bq_schemas/
 
 Execution command
 
