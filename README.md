@@ -64,7 +64,7 @@ Leave this terminal open as we will be issuing SQL statements to generate change
 
 Create a Cloud Pub/Sub topic with the following naming convertion:  
 
-    \<instance-name\>.\<schema\>.\<table\>  
+    <instance-name>.<schema>.<table>  
 
 Our example will use the customers table (one of the table created with the SQL script we ran before).
 Topic name for this example:
