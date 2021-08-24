@@ -204,7 +204,7 @@ Steps for the Cloud Dataflow Template Job:
 
 7) Leave all the other parameters with the options selected by default and press "RUN JOB".
 
-### Streaming Inserts to BigQuery with Cloud Dataflow CUSTOM Job
+### Streaming Pipeline with Batch Loads / Streaming Inserts to BigQuery with Cloud Dataflow CUSTOM Job
 
 Prerequisite 1: Create a BigQuery table in the project and dataset of your preference named "customers_delta". Use the *schema_customers_delta.json* file attached to this project (within the other_resources subfolder) to set the schema to the created table using the option "edit as text".
 
@@ -213,6 +213,10 @@ Prerequisite 2: Create a BigQuery table in the project and dataset of your prefe
 Prerequisite 3: Create another topic (apart from the cdc-postgres-instance.inventory.customers ==> already created in section above) called cdc-postgres-instance.inventory.products.
 
 The JAVA code in this repository, resolves the constraints mentioned on the previous section. It allows to specify in the *configuration.properties file* in the resources subfolder of this project, the different tables (mapped 1:1 with topics in Cloud Pub/Sub), that we want to group and get changes for, in a single Dataflow job. You can list the desired number of tables, but please consider setting up the correct number of maximum dataflow workers and machine type, by taking in consideration the volume of data and the frequency of the changes.
+
+It's important to mention that this code, performs batch loads to BigQuery, accumulating the events (database captured changes) every 2 minutes, writing them to a temporary bucket and then uploading the records of this 2 minutes bounded data to BigQuery. This is done by setting the write option "withMethod" to FILE_LOADS *.withMethod(BigQueryIO.Write.Method.FILE_LOADS)* and the option "withTriggeringFrequency" to *.withTriggeringFrequency(Duration.standardMinutes(2))*.
+
+If you want to do it with *Streaming Inserts*, you will need to just change the write option "withMethod" to STREAMING_INSERTS and remove the "withTriggeringFrequency" option / sentence from the code.
 
 Below are the configuration file properties to be specified:
 
