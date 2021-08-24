@@ -204,7 +204,7 @@ Steps for the Cloud Dataflow Template Job:
 
 7) Leave all the other parameters with the options selected by default and press "RUN JOB".
 
-### Streaming Pipeline with Batch Loads / Streaming Inserts to BigQuery with Cloud Dataflow CUSTOM Job
+### Batch Loads / Streaming Inserts to BigQuery with Cloud Dataflow CUSTOM Job
 
 Prerequisite 1: Create a BigQuery table in the project and dataset of your preference named "customers_delta". Use the *schema_customers_delta.json* file attached to this project (within the other_resources subfolder) to set the schema to the created table using the option "edit as text".
 
