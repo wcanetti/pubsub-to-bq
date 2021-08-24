@@ -260,7 +260,7 @@ Note: you may also use the *schema_products_main.json* to also create the produc
 
 As time goes by, the *customers_main* table will start having outdated information. To achieve immediate consistency and to show the current version of the data, this approach proposes to JOIN the MAIN table (*customers_main*) with the DELTA table (*customers_delta*) which contains the track of the changes that occured in the Postgres DB instance.
 
-    CREATE VIEW \<dataset\>.immediate_consistency_customers AS (
+    CREATE VIEW <dataset>.immediate_consistency_customers AS (
         SELECT * EXCEPT(op, row_num)  
         FROM (  
             SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY ts_ms DESC) AS row_num  
