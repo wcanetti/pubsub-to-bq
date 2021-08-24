@@ -49,7 +49,7 @@ Give execution permissions to the file using the following command:
 
 Connect to your Cloud SQL instance using the following command:  
 
-    ./cloud_sql_proxy --instances=\<project\>:\<location\>:\<instance-name\>=tcp:0.0.0.0:5432
+    ./cloud_sql_proxy --instances=<project>:<location>:<instance-name>=tcp:0.0.0.0:5432
 
 Check tables existance by running the following query:  
     
